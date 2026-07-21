@@ -44,7 +44,7 @@ nav{
 #hero { 
     padding-top: 2rem;
     min-height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('img/portada.jpg'); 
+    background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('img/Portada.jpg'); 
     background-size: cover;
     background-position: center;
     display: flex;
