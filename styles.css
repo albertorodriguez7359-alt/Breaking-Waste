@@ -1,421 +1,134 @@
-* {
-    margin: 0; 
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+/* styles.css corregido y responsive */
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Arial,sans-serif;
 }
+body{line-height:1.6;}
+img{max-width:100%;height:auto;display:block;}
 
-    body { 
-        line-height: 1.6;
+header{box-shadow:0 2px 5px rgba(0,0,0,.1);}
+nav{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ max-width:1200px;
+ margin:auto;
+ padding:1rem 2rem;
 }
+.logo{font-size:1.5rem;font-weight:bold;color:#333;}
+.nav-links{display:flex;list-style:none;gap:2rem;}
+.nav-links a{text-decoration:none;color:#333;}
 
-header {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
+#hero{
+ min-height:80vh;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+ color:#fff;
+ padding:2rem 1rem;
+ background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),url('img/Portada.jpg') center/cover;
 }
+#hero h1{font-size:3rem;}
 
-nav{ 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem; ;
-    max-width: 1200px;
-    margin: 0 auto;
+#descripcion,#propiedades,#contacto,#sensor,#creadores,#galeria{
+ padding:4rem 2rem;
 }
+#descripcion{max-width:1000px;margin:auto;text-align:center;}
+#descripcion p{font-size:1.2rem;color:#555;}
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
+#propiedades{max-width:1200px;margin:auto;}
+#propiedades h2,#contacto h2,#galeria h2,#creadores h2,#sensor h2{text-align:center;margin-bottom:2rem;}
+
+.propiedades-grid,.galeria-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:2rem;
 }
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 2rem; 
+.propiedad-card,.galeria-card,.persona,.sensor-card{
+ background:#fff;
+ border-radius:15px;
+ overflow:hidden;
+ box-shadow:0 2px 10px rgba(0,0,0,.15);
 }
+.propiedad-card h3,.galeria-card h3{padding:1rem;}
+.Descripcion,.galeria-card p{padding:0 1rem 1rem;color:#666;}
 
-.nav-links a {
-    text-decoration: none;
-    color: #333;
-   
+#contacto{background:#f9f9f9;}
+form{
+ max-width:600px;
+ width:100%;
+ margin:auto;
+ display:flex;
+ flex-direction:column;
+ gap:1rem;
 }
-
-#hero { 
-    padding-top: 2rem;
-    min-height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('img/Portada.jpg'); 
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: white;
-    padding: 0 1rem;
-    
+input,textarea,button{
+ width:100%;
+ padding:.8rem;
+ border-radius:5px;
 }
-
-#hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+textarea{height:150px;resize:vertical;}
+form button{
+ background:#147917;color:#fff;border:none;cursor:pointer;
 }
-
-#propiedades {
-    padding: 4rem 2rem;
-   max-width: 1200px;  
-    margin: 0 auto;
-}
-
-#propiedades h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    
-}
-
-.propiedades-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.propiedad-card {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.propiedad-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.propiedad-card h3 {
-    padding: 1rem;
-    color:#333
-}
-
-.Precio {
-    color: #ff6b6b;
-    font-weight: bold;
-    padding: 0 1rem;
-    
-}
-
-.Descripcion {
-    padding: .5rem 1rem;
-    color: #666;
-}
-
-.propiedad-card button {
-    margin: 1rem;
-    padding: 0.5rem 1rem;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.propiedad-card button:hover {
-    background-color: black;
-}
-
-#contacto {
-   background-color: #f9f9f9;
-    padding: 4rem 2rem;
-    
-}
-
-#contacto h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-}
-
-input, textarea {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-textarea {
-    height: 150px;
-    resize: vertical;
-}
-
-form button {
-    background-color: #147917;
-    color: black;
-    border: none;
-    padding: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-form button:hover {
-    background-color: #0d7513;
-}
-
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center; 
-    padding: 1rem;
-}
-
-@media screen and (max-width: 430px){
-    nav {
-        flex-direction: column;
-        padding: 1rem;
-    }
-    .nav-links {
-        flex-direction: column;
-        text-align: center;
-        margin-top: 1rem;
-        gap: 1rem;
-    }
-}
-#sensor {
-
-    padding: 4rem 2rem;
-    text-align:center;
-    background:#f4f4f4;
-
-}
-
-
-.sensor-card {
-
-    background:white;
-    max-width:400px;
-    margin:auto;
-    padding:2rem;
-
-    border-radius:15px;
-
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
-
-}
-
-
-#distancia {
-
-    font-size:3rem;
-    color:#147917;
-    font-weight:bold;
-
-}
-
-
-#estado {
-
-    font-weight:bold;
-}
-#sensor {
-
-padding:4rem 2rem;
-text-align:center;
-
-}
-
-
-.sensor-card {
-
-background:white;
-max-width:400px;
-margin:auto;
-padding:30px;
-
-border-radius:15px;
-
-box-shadow:0 2px 10px #999;
-
-}
-
-
-#porcentaje {
-
-font-size:50px;
-font-weight:bold;
-color:#147917;
-
-}
-#sensor {
-
-padding: 5rem 2rem;
-text-align:center;
-
-}
-
-
-.sensor-card {
-
-background:white;
-
-max-width:400px;
-
-margin:auto;
-
-padding:30px;
-
-border-radius:15px;
-
-box-shadow:0 2px 10px rgba(0,0,0,.3);
-
-}
-
-
-#distancia {
-
-font-size:50px;
-
-font-weight:bold;
-
-color:#147917;
-
-}
-
-#descripcion{
-
-padding:4rem 2rem;
-max-width:1000px;
-margin:auto;
-text-align:center;
-
-}
-
-
-#descripcion p{
-
-font-size:1.2rem;
-color:#555;
-
-}
-
-
-
-
-#galeria{
-
-padding:4rem 2rem;
-background:#f4f4f4;
-text-align:center;
-
-}
-
-
-
-.galeria-grid{
-
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-
-gap:2rem;
-
-}
-
-
-
-.galeria-card{
-
-background:white;
-border-radius:15px;
-overflow:hidden;
-box-shadow:0 2px 10px #aaa;
-
-}
-
-
-
-.galeria-card img{
-
-width:100%;
-height:200px;
-object-fit:cover;
-
-}
-
-
-
-.galeria-card h3{
-
-padding:1rem;
-
-}
-
-
-
-.galeria-card p{
-
-padding:0 1rem 1rem;
-color:#666;
-
-}
-
-
-
-
-
-#creadores{
-
-padding:4rem 2rem;
-text-align:center;
-
-}
-
-
-
-.creadores{
-
-display:flex;
-justify-content:center;
-gap:2rem;
-flex-wrap:wrap;
-
-}
-
-
-
-.persona{
-
-background:white;
-padding:2rem;
-width:250px;
-border-radius:15px;
-box-shadow:0 2px 10px #aaa;
-
-}
+form button:hover{background:#0d7513;}
 
 .sensor-card{
-    width:300px;
-    margin:auto;
-    margin-top:50px;
-    background:#ffffff;
-    padding:25px;
-    border-radius:12px;
-    text-align:center;
-    box-shadow:0px 0px 12px rgba(0,0,0,.2);
+ max-width:400px;
+ margin:auto;
+ padding:2rem;
+ text-align:center;
+}
+#porcentaje{font-size:3rem;font-weight:bold;color:#147917;}
+#estado{font-weight:bold;color:#008000;}
+
+.creadores{
+ display:flex;
+ justify-content:center;
+ gap:2rem;
+ flex-wrap:wrap;
+}
+.persona{
+ width:250px;
+ padding:2rem;
+ text-align:center;
 }
 
-#porcentaje{
-    font-size:45px;
-    font-weight:bold;
-    color:#2E8B57;
+footer{
+ background:#333;
+ color:#fff;
+ text-align:center;
+ padding:1rem;
 }
 
-#estado{
-    color:#008000;
-    font-weight:bold;
+@media (max-width:768px){
+ nav{
+  flex-direction:column;
+  padding:1rem;
+ }
+ .nav-links{
+  flex-direction:column;
+  gap:1rem;
+  width:100%;
+  text-align:center;
+  margin-top:1rem;
+ }
+ #hero h1{font-size:2rem;}
+ #descripcion p{font-size:1rem;}
+ .propiedades-grid,.galeria-grid{
+  grid-template-columns:1fr;
+ }
+ .creadores{
+  flex-direction:column;
+  align-items:center;
+ }
+ .persona,.sensor-card{
+  width:90%;
+  max-width:350px;
+ }
 }
