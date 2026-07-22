@@ -1,213 +1,918 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav>
-        <div class="logo">Breaking Waste</div>
-        <ul class="nav-links">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="propiedades.html">Propiedades</a></li>
-            <li><a href="sensor.html">Sensor</a></li>
-            <li><a href="contacto.html">Contacto</a></li> 
-        </ul>
-        </nav>
-    </header> 
-   
 
-    <main>
-        <section id="hero">
-            <h1>La tecnología al servicio de una comunidad más limpia</h1>
-            
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Breaking Waste</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+    <!-- ==========================================
+         PANTALLA DE INICIO DE SESIÓN
+    =========================================== -->
+
+    <section
+        id="stLoginScreen"
+        class="st-login-screen"
+    >
+
+        <div class="st-login-card">
+
+            <div class="st-login-logo">
+                🗑️
+            </div>
+
+            <h1>Breaking Waste</h1>
+
+            <p class="st-login-description">
+                Sistema de monitoreo del contenedor
+            </p>
+
+
+            <form id="stLoginForm">
+
+                <div class="st-form-group">
+
+                    <label for="stLoginEmail">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="stLoginEmail"
+                        placeholder="usuario@correo.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="st-form-group">
+
+                    <label for="stLoginPassword">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="stLoginPassword"
+                        placeholder="Escribe tu contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="st-primary-button"
+                >
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+
+            <p
+                id="stLoginMessage"
+                class="st-error-message"
+            ></p>
+
+
+            <div class="st-demo-account">
+
+                <strong>Cuenta de prueba</strong>
+
+                <p>
+                    Correo: usuario@correo.com
+                </p>
+
+                <p>
+                    Contraseña: 123456
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         APLICACIÓN PRINCIPAL
+    =========================================== -->
+
+    <div
+        id="stApplication"
+        class="st-application st-hidden"
+    >
+
+        <!-- ======================================
+             ENCABEZADO
+        ======================================= -->
+
+        <header>
+
+            <nav>
+
+                <div class="logo">
+                    Breaking Waste
+                </div>
+
+
+                <ul class="nav-links">
+
+                    <li>
+                        <a href="index.html">
+                            Inicio
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="propiedades.html">
+                            Propiedades
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="sensor.html">
+                            Sensor
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="contacto.html">
+                            Contacto
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <!-- MENÚ DEL USUARIO -->
+
+                <div class="st-user-menu-container">
+
+                    <button
+                        type="button"
+                        id="stUserMenuButton"
+                        class="st-user-menu-button"
+                        aria-label="Abrir menú del usuario"
+                    >
+
+                        <span class="st-user-avatar">
+                            👤
+                        </span>
+
+
+                        <span class="st-user-button-information">
+
+                            <strong id="stHeaderName">
+                                Usuario
+                            </strong>
+
+                            <small id="stHeaderEmail">
+                                usuario@correo.com
+                            </small>
+
+                        </span>
+
+
+                        <span>
+                            ▼
+                        </span>
+
+                    </button>
+
+
+                    <!-- MENÚ DESPLEGABLE -->
+
+                    <div
+                        id="stUserDropdown"
+                        class="st-user-dropdown st-hidden"
+                    >
+
+                        <button
+                            type="button"
+                            class="st-dropdown-option"
+                            data-st-section="stProfileSection"
+                        >
+                            👤 Mi perfil
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="st-dropdown-option"
+                            data-st-section="stEditProfileSection"
+                        >
+                            ✏️ Editar perfil
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="st-dropdown-option"
+                            data-st-section="stSettingsSection"
+                        >
+                            ⚙️ Configuración
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="stLogoutButton"
+                            class="st-dropdown-option st-logout-option"
+                        >
+                            🚪 Cerrar sesión
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </nav>
+
+        </header>
+
+
+        <!-- ======================================
+             SECCIÓN DE INICIO
+        ======================================= -->
+
+        <main
+            id="stHomeSection"
+            class="st-page-section st-home-section st-active-section"
+        >
+
+            <!-- PORTADA -->
+
+            <section id="hero">
+
+                <h1>
+                    La tecnología al servicio de una comunidad más limpia
+                </h1>
+
+            </section>
+
+
+            <!-- DESCRIPCIÓN -->
+
+            <section id="descripcion">
+
+                <h2>
+                    Sobre nuestro proyecto
+                </h2>
+
+                <p>
+                    Breaking Waste es un sistema inteligente de monitoreo
+                    de residuos que utiliza sensores infrarrojos FC-51
+                    conectados a un ESP32 para detectar el nivel de llenado
+                    de un contenedor y mostrar la información en una
+                    aplicación web en tiempo real.
+                </p>
+
+            </section>
+
+
+            <!-- CARACTERÍSTICAS -->
+
+            <section id="galeria">
+
+                <h2>
+                    Características del sistema
+                </h2>
+
+
+                <div class="galeria-grid">
+
+                    <!-- ESP32 -->
+
+                    <div class="galeria-card">
+
+                        <img
+                            src="img/ESP32.png"
+                            alt="Placa de desarrollo ESP32"
+                        >
+
+                        <h3>
+                            ESP32
+                        </h3>
+
+                        <p>
+                            Microcontrolador encargado de leer los sensores
+                            y enviar la información mediante una red WiFi.
+                        </p>
+
+                    </div>
+
+
+                    <!-- SENSOR -->
+
+                    <div class="galeria-card">
+
+                        <img
+                            src="img/sensorfc-51.png"
+                            alt="Sensor infrarrojo FC-51"
+                        >
+
+                        <h3>
+                            Sensor FC-51
+                        </h3>
+
+                        <p>
+                            Sensor infrarrojo utilizado para detectar
+                            cuándo los residuos alcanzan un nivel determinado.
+                        </p>
+
+                    </div>
+
+
+                    <!-- APLICACIÓN WEB -->
+
+                    <div class="galeria-card">
+
+                        <img
+                            src="img/appweb.png"
+                            alt="Aplicación web de Breaking Waste"
+                        >
+
+                        <h3>
+                            Aplicación web
+                        </h3>
+
+                        <p>
+                            Interfaz donde el usuario puede consultar
+                            el estado y nivel del contenedor.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CREADORES -->
+
+            <section id="creadores">
+
+                <h2>
+                    Creadores
+                </h2>
+
+
+                <div class="creadores">
+
+                    <div class="persona">
+
+                        <h3>
+                            Luis Alberto Rodríguez Martínez
+                        </h3>
+
+                        <p>
+                            Desarrollo de hardware y programación del ESP32
+                        </p>
+
+                    </div>
+
+
+                    <div class="persona">
+
+                        <h3>
+                            Valentina Ramos Benavides
+                        </h3>
+
+                        <p>
+                            Diseño de aplicación web
+                        </p>
+
+                    </div>
+
+
+                    <div class="persona">
+
+                        <h3>
+                            Elton Eliel Ramírez Guillén
+                        </h3>
+
+                        <p>
+                            Diseño de aplicación web
+                        </p>
+
+                    </div>
+
+
+                    <div class="persona">
+
+                        <h3>
+                            Samantha Isadora Gallegos Herrera
+                        </h3>
+
+                        <p>
+                            Diseño de aplicación web
+                        </p>
+
+                    </div>
+
+
+                    <div class="persona">
+
+                        <h3>
+                            Alejandro Uriel Márquez Rivera
+                        </h3>
+
+                        <p>
+                            Diseño de aplicación web
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PIE DE PÁGINA -->
+
+            <footer>
+
+                <p>
+                    &copy; Breaking Waste. Todos los derechos reservados.
+                </p>
+
+            </footer>
+
+        </main>
+
+
+        <!-- ==========================================
+             SECCIÓN MI PERFIL
+        =========================================== -->
+
+        <section
+            id="stProfileSection"
+            class="st-page-section"
+        >
+
+            <div class="st-section-card">
+
+                <div class="st-section-title">
+
+                    <div class="st-large-avatar">
+                        👤
+                    </div>
+
+
+                    <div>
+
+                        <h2 id="stProfileName">
+                            Usuario
+                        </h2>
+
+                        <p id="stProfileEmail">
+                            usuario@correo.com
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="st-profile-grid">
+
+                    <div class="st-information-item">
+
+                        <span>
+                            Nombre completo
+                        </span>
+
+                        <strong id="stInfoName">
+                            No registrado
+                        </strong>
+
+                    </div>
+
+
+                    <div class="st-information-item">
+
+                        <span>
+                            Correo electrónico
+                        </span>
+
+                        <strong id="stInfoEmail">
+                            No registrado
+                        </strong>
+
+                    </div>
+
+
+                    <div class="st-information-item">
+
+                        <span>
+                            Teléfono
+                        </span>
+
+                        <strong id="stInfoPhone">
+                            No registrado
+                        </strong>
+
+                    </div>
+
+
+                    <div class="st-information-item">
+
+                        <span>
+                            Dirección
+                        </span>
+
+                        <strong id="stInfoAddress">
+                            No registrada
+                        </strong>
+
+                    </div>
+
+
+                    <div class="st-information-item">
+
+                        <span>
+                            Contenedor asignado
+                        </span>
+
+                        <strong id="stInfoContainer">
+                            Sin contenedor
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="stGoToEditButton"
+                    class="st-primary-button st-small-button"
+                >
+                    Editar perfil
+                </button>
+
+            </div>
+
         </section>
 
-         <section id="descripcion">
 
-<h2>
-Sobre nuestro proyecto
-</h2>
+        <!-- ==========================================
+             SECCIÓN EDITAR PERFIL
+        =========================================== -->
 
+        <section
+            id="stEditProfileSection"
+            class="st-page-section"
+        >
 
-<p>
-Breaking Waste es un sistema inteligente de monitoreo de residuos
-que utiliza un sensor infrarrojo FC-51 conectado a un ESP32
-para medir el nivel de llenado de un contenedor y mostrar la información
-en una aplicación web en tiempo real.
-</p>
+            <div class="st-section-card">
 
+                <h2>
+                    Editar perfil
+                </h2>
 
-</section>
+                <p class="st-section-description">
+                    Modifica los datos asociados a tu cuenta.
+                </p>
 
-<section id="galeria">
 
+                <form id="stEditProfileForm">
 
-<h2>
-Características del sistema
-</h2>
+                    <div class="st-form-row">
 
+                        <div class="st-form-group">
 
-<div class="galeria-grid">
+                            <label for="stEditName">
+                                Nombre completo
+                            </label>
 
+                            <input
+                                type="text"
+                                id="stEditName"
+                                autocomplete="name"
+                                required
+                            >
 
-<div class="galeria-card">
+                        </div>
 
-<img src="img/ESP32.png">
 
+                        <div class="st-form-group">
 
-<h3>
-ESP32
-</h3>
+                            <label for="stEditEmail">
+                                Correo electrónico
+                            </label>
 
+                            <input
+                                type="email"
+                                id="stEditEmail"
+                                autocomplete="email"
+                                required
+                            >
 
-<p>
-Microcontrolador encargado de enviar los datos del sensor.
-</p>
+                        </div>
 
-</div>
+                    </div>
 
 
+                    <div class="st-form-row">
 
+                        <div class="st-form-group">
 
-<div class="galeria-card">
+                            <label for="stEditPhone">
+                                Teléfono
+                            </label>
 
+                            <input
+                                type="tel"
+                                id="stEditPhone"
+                                placeholder="614 123 4567"
+                                autocomplete="tel"
+                            >
 
-<img src="img/sensorfc-51.png">
+                        </div>
 
 
-<h3>
-Sensor FC-51
-</h3>
+                        <div class="st-form-group">
 
+                            <label for="stEditAddress">
+                                Dirección
+                            </label>
 
-<p>
-Permite detectar obstáculos, medir distancias y rastrear líneas.
-</p>
+                            <input
+                                type="text"
+                                id="stEditAddress"
+                                placeholder="Chihuahua, Chihuahua"
+                                autocomplete="street-address"
+                            >
 
+                        </div>
 
-</div>
+                    </div>
 
 
+                    <div class="st-form-group">
 
+                        <label for="stEditContainer">
+                            Contenedor asignado
+                        </label>
 
-<div class="galeria-card">
+                        <input
+                            type="text"
+                            id="stEditContainer"
+                            placeholder="Breaking Waste #001"
+                        >
 
+                    </div>
 
-<img src="img/appweb.png">
 
+                    <div class="st-form-group">
 
-<h3>
-Aplicación Web
-</h3>
+                        <label for="stEditPassword">
+                            Nueva contraseña
+                        </label>
 
+                        <input
+                            type="password"
+                            id="stEditPassword"
+                            placeholder="Déjala vacía para no cambiarla"
+                            autocomplete="new-password"
+                        >
 
-<p>
-Interfaz donde se observa el estado del contenedor.
-</p>
+                    </div>
 
 
-</div>
+                    <div class="st-form-group">
 
+                        <label for="stConfirmPassword">
+                            Confirmar nueva contraseña
+                        </label>
 
-</div>
+                        <input
+                            type="password"
+                            id="stConfirmPassword"
+                            placeholder="Repite la nueva contraseña"
+                            autocomplete="new-password"
+                        >
 
+                    </div>
 
-</section>
-        
-    </main>
 
-    <section id="creadores">
+                    <button
+                        type="submit"
+                        class="st-primary-button"
+                    >
+                        Guardar cambios
+                    </button>
 
 
-<h2>
-Creadores
-</h2>
+                    <p
+                        id="stEditProfileMessage"
+                        class="st-success-message"
+                    ></p>
 
+                </form>
 
-<div class="creadores">
+            </div>
 
+        </section>
 
-<div class="persona">
 
-<h3>
-Luis Alberto Rodríguez Martinez
-</h3>
+        <!-- ==========================================
+             SECCIÓN CONFIGURACIÓN
+        =========================================== -->
 
-<p>
-Desarrollo de hardware y programación ESP32
-</p>
+        <section
+            id="stSettingsSection"
+            class="st-page-section"
+        >
 
-</div>
+            <div class="st-section-card">
 
+                <h2>
+                    Configuración
+                </h2>
 
+                <p class="st-section-description">
+                    Personaliza el funcionamiento de la aplicación.
+                </p>
 
-<div class="persona">
 
-<h3>
-Valentina Ramos Benavides
-</h3>
+                <div class="st-settings-list">
 
-<p>
-Diseño de aplicación web
-</p>
+                    <!-- MODO OSCURO -->
 
-</div>
+                    <div class="st-setting-item">
 
+                        <div>
 
+                            <h3>
+                                Modo oscuro
+                            </h3>
 
-<div class="persona">
+                            <p>
+                                Cambia los colores de la aplicación.
+                            </p>
 
-<h3>
-Elton Eliel Ramirez Guillen
-</h3>
+                        </div>
 
-<p>
-Diseño de aplicación web
-</p>
 
-</div>
+                        <label class="st-switch">
 
+                            <input
+                                type="checkbox"
+                                id="stDarkModeSetting"
+                            >
 
+                            <span class="st-slider"></span>
 
-<div class="persona">
+                        </label>
 
-<h3>
-Samantha Isadora Gallegos Herrera
-</h3>
+                    </div>
 
-<p>
-Diseño de aplicación web
-</p>
 
-</div>
+                    <!-- NOTIFICACIONES -->
 
+                    <div class="st-setting-item">
 
+                        <div>
 
-<div class="persona">
+                            <h3>
+                                Recibir notificaciones
+                            </h3>
 
-<h3>
-Alejandro Uriel Márquez Rivera
-</h3>
+                            <p>
+                                Avisar cuando el contenedor llegue al 90%.
+                            </p>
 
-<p>
-Diseño de aplicación web
-</p>
+                        </div>
 
-</div>
 
+                        <label class="st-switch">
 
+                            <input
+                                type="checkbox"
+                                id="stNotificationsSetting"
+                                checked
+                            >
 
-</div>
+                            <span class="st-slider"></span>
 
+                        </label>
 
-</section>
-    <footer>
-        <p>&copy; Premium Home. Todos los derechos reservados.</p>
-    </footer>
-    <script src="script.js"></script> 
+                    </div>
+
+
+                    <!-- MOSTRAR PORCENTAJE -->
+
+                    <div class="st-setting-item">
+
+                        <div>
+
+                            <h3>
+                                Mostrar porcentaje
+                            </h3>
+
+                            <p>
+                                Muestra el porcentaje en el panel del sensor.
+                            </p>
+
+                        </div>
+
+
+                        <label class="st-switch">
+
+                            <input
+                                type="checkbox"
+                                id="stPercentageSetting"
+                                checked
+                            >
+
+                            <span class="st-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- ALERTAS SONORAS -->
+
+                    <div class="st-setting-item">
+
+                        <div>
+
+                            <h3>
+                                Alertas sonoras
+                            </h3>
+
+                            <p>
+                                Reproduce un sonido cuando el bote esté lleno.
+                            </p>
+
+                        </div>
+
+
+                        <label class="st-switch">
+
+                            <input
+                                type="checkbox"
+                                id="stSoundSetting"
+                            >
+
+                            <span class="st-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="stSaveSettingsButton"
+                    class="st-primary-button st-small-button"
+                >
+                    Guardar configuración
+                </button>
+
+
+                <p
+                    id="stSettingsMessage"
+                    class="st-success-message"
+                ></p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- ==========================================
+         JAVASCRIPT DEL PERFIL Y SESIÓN
+    =========================================== -->
+
+    <script src="app.js"></script>
+
 </body>
+
 </html>

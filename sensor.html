@@ -4,83 +4,221 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Sensor</title>
+    <title>Sensor | Breaking Waste</title>
 
-<link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 
-<script src="script.js"></script>
-
-<script>
-    alert("JavaScript cargado correctamente");
-</script>
-
-</body>
-
 <body>
 
-<header>
+    <header>
 
-<nav>
+        <nav>
 
-<div class="logo">
+            <div class="logo">
+                Breaking Waste
+            </div>
 
-Breaking Waste
+            <ul class="nav-links">
 
-</div>
+                <li>
+                    <a href="index.html">Inicio</a>
+                </li>
 
-<ul class="nav-links">
+                <li>
+                    <a href="propiedades.html">
+                        Propiedades
+                    </a>
+                </li>
 
-<li><a href="index.html">Inicio</a></li>
+                <li>
+                    <a
+                        href="sensor.html"
+                        class="active"
+                    >
+                        Sensor
+                    </a>
+                </li>
 
-<li><a href="propiedades.html">Propiedades</a></li>
+                <li>
+                    <a href="contacto.html">
+                        Contacto
+                    </a>
+                </li>
 
-<li><a href="sensor.html">Sensor</a></li>
+            </ul>
 
-<li><a href="contacto.html">Contacto</a></li>
+        </nav>
 
-</ul>
+    </header>
 
-</nav>
 
-</header>
+    <main>
 
-<section id="sensor">
+        <section id="sensor">
 
-<h2>Monitor del contenedor</h2>
+            <h2>
+                Monitor del contenedor
+            </h2>
 
-<div class="sensor-card">
+            <p class="sensor-descripcion">
+                Información recibida desde el ESP32.
+            </p>
 
-<h3>Nivel del bote</h3>
 
-<p id="porcentaje">
+            <div class="sensor-grid">
 
-Esperando datos...
+                <article
+                    class="sensor-card sensor-card-principal"
+                >
 
-</p>
+                    <h3>
+                        Nivel del bote
+                    </h3>
 
-<p>
+                    <p
+                        id="porcentaje"
+                        class="sensor-porcentaje"
+                    >
+                        0%
+                    </p>
 
-Estado:
 
-<span id="estado">
+                    <div
+                        class="contenedor-barra"
+                        role="progressbar"
+                        aria-label="Nivel de llenado del contenedor"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                    >
 
-Desconectado
+                        <div
+                            id="barraProgreso"
+                            class="barra-progreso"
+                            style="width: 0%;"
+                        ></div>
 
-</span>
+                    </div>
 
-</p>
 
-</div>
+                    <p class="sensor-estado-texto">
 
-</section>
+                        Estado:
 
-<script src="script.js"></script>
+                        <strong
+                            id="estadoContenedor"
+                            aria-live="polite"
+                        >
+                            Esperando información
+                        </strong>
+
+                    </p>
+
+                </article>
+
+
+                <article class="sensor-card">
+
+                    <h3>
+                        Sensor del 50%
+                    </h3>
+
+                    <p
+                        id="estadoSensor50"
+                        class="estado-sensor"
+                        aria-live="polite"
+                    >
+                        Sin detectar
+                    </p>
+
+                    <p>
+                        Detecta cuando el contenedor alcanza
+                        aproximadamente la mitad de su capacidad.
+                    </p>
+
+                </article>
+
+
+                <article class="sensor-card">
+
+                    <h3>
+                        Sensor del 90%
+                    </h3>
+
+                    <p
+                        id="estadoSensor90"
+                        class="estado-sensor"
+                        aria-live="polite"
+                    >
+                        Sin detectar
+                    </p>
+
+                    <p>
+                        Detecta cuando el contenedor está
+                        próximo a llenarse.
+                    </p>
+
+                </article>
+
+
+                <article class="sensor-card">
+
+                    <h3>
+                        Conexión con el ESP32
+                    </h3>
+
+                    <p
+                        id="estadoConexion"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Desconectado
+                    </p>
+
+                </article>
+
+
+                <article class="sensor-card">
+
+                    <h3>
+                        Última actualización
+                    </h3>
+
+                    <p
+                        id="ultimaActualizacion"
+                        aria-live="polite"
+                    >
+                        Sin información
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            &copy; Breaking Waste. Todos los derechos reservados.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
 
 </body>
 

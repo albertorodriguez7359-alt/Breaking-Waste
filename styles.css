@@ -6,10 +6,22 @@
  box-sizing:border-box;
  font-family:Arial,sans-serif;
 }
-body{line-height:1.6;}
+body{
+ line-height:1.6;
+ background:#f3f6f5;
+ color:#1b2923;
+ transition:background .3s ease,color .3s ease;
+}
 img{max-width:100%;height:auto;display:block;}
 
-header{box-shadow:0 2px 5px rgba(0,0,0,.1);}
+header{
+ background:#ffffff;
+ box-shadow:0 2px 10px rgba(0,0,0,.08);
+ position:sticky;
+ top:0;
+ z-index:100;
+ transition:background .3s ease,color .3s ease;
+}
 nav{
  display:flex;
  justify-content:space-between;
@@ -131,4 +143,696 @@ footer{
   width:90%;
   max-width:350px;
  }
+}
+/* =====================================================
+   SMART TRASH: PERFIL, CONFIGURACIÓN Y SESIÓN
+===================================================== */
+
+:root {
+    --st-primary: #18865d;
+    --st-primary-dark: #106a48;
+    --st-background: #f3f6f5;
+    --st-card: #ffffff;
+    --st-text: #1b2923;
+    --st-secondary-text: #6e7c76;
+    --st-border: #dce5e1;
+    --st-danger: #d94d4d;
+    --st-success: #18865d;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.st-hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   INICIO DE SESIÓN
+===================================================== */
+
+.st-login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(13, 70, 50, 0.97),
+            rgba(24, 134, 93, 0.92)
+        );
+}
+
+.st-login-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 38px;
+
+    background: #ffffff;
+    border-radius: 20px;
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.st-login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 18px;
+
+    font-size: 38px;
+
+    background: #e2f4ec;
+    border-radius: 18px;
+}
+
+.st-login-card h1 {
+    margin: 0 0 8px;
+    text-align: center;
+    color: #1b2923;
+}
+
+.st-login-description {
+    margin-bottom: 28px;
+    text-align: center;
+    color: #6e7c76;
+}
+
+.st-demo-account {
+    margin-top: 20px;
+    padding: 15px;
+
+    color: #315b4b;
+    background: #eaf7f1;
+    border-radius: 10px;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.st-demo-account p {
+    margin: 3px 0;
+}
+
+
+/* =====================================================
+   FORMULARIOS
+===================================================== */
+
+.st-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+.st-form-group label {
+    color: var(--st-text);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.st-form-group input {
+    width: 100%;
+    padding: 13px 14px;
+
+    color: var(--st-text);
+    background: var(--st-card);
+
+    border: 1px solid var(--st-border);
+    border-radius: 10px;
+
+    font-size: 15px;
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.st-form-group input:focus {
+    border-color: var(--st-primary);
+    box-shadow: 0 0 0 3px rgba(24, 134, 93, 0.13);
+}
+
+.st-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.st-primary-button {
+    width: 100%;
+    padding: 13px 18px;
+
+    color: white;
+    background: var(--st-primary);
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.st-primary-button:hover {
+    background: var(--st-primary-dark);
+}
+
+.st-small-button {
+    width: auto;
+    margin-top: 22px;
+}
+
+.st-error-message {
+    min-height: 22px;
+    margin-top: 14px;
+
+    color: var(--st-danger);
+    text-align: center;
+    font-size: 14px;
+}
+
+.st-success-message {
+    min-height: 22px;
+    margin-top: 14px;
+
+    color: var(--st-success);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   MENÚ DEL USUARIO
+===================================================== */
+
+.st-user-menu-container {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.st-user-menu-button {
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 12px;
+
+    color: var(--st-text);
+    background: var(--st-card);
+
+    border: 1px solid var(--st-border);
+    border-radius: 12px;
+
+    cursor: pointer;
+}
+
+.st-user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    background: #dff3e9;
+    border-radius: 50%;
+
+    font-size: 21px;
+}
+
+.st-user-button-information {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+}
+
+.st-user-button-information small {
+    color: var(--st-secondary-text);
+}
+
+.st-user-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 230px;
+    padding: 8px;
+
+    background: var(--st-card);
+
+    border: 1px solid var(--st-border);
+    border-radius: 12px;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.st-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    padding: 12px;
+
+    color: var(--st-text);
+    background: transparent;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.st-dropdown-option:hover {
+    background: rgba(24, 134, 93, 0.1);
+}
+
+.st-logout-option {
+    color: var(--st-danger);
+}
+
+
+/* =====================================================
+   NAVEGACIÓN
+===================================================== */
+
+.st-navigation-button {
+    padding: 11px 15px;
+
+    color: white;
+    background: var(--st-primary);
+
+    border: none;
+    border-radius: 9px;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   SECCIONES
+===================================================== */
+
+.st-page-section {
+    display: none;
+}
+
+.st-page-section.st-active-section {
+    display: block;
+}
+
+.st-section-card {
+    width: 100%;
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 28px;
+
+    color: var(--st-text);
+    background: var(--st-card);
+
+    border: 1px solid var(--st-border);
+    border-radius: 17px;
+
+    box-shadow: 0 7px 22px rgba(20, 45, 35, 0.08);
+}
+
+.st-section-card h2 {
+    margin-top: 0;
+}
+
+.st-section-description {
+    margin: 8px 0 28px;
+    color: var(--st-secondary-text);
+}
+
+
+/* =====================================================
+   INFORMACIÓN DEL PERFIL
+===================================================== */
+
+.st-section-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--st-border);
+}
+
+.st-section-title h2 {
+    margin: 0 0 7px;
+}
+
+.st-section-title p {
+    margin: 0;
+    color: var(--st-secondary-text);
+}
+
+.st-large-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 85px;
+    height: 85px;
+
+    background: #dff3e9;
+    border-radius: 50%;
+
+    font-size: 40px;
+}
+
+.st-profile-grid {
+    margin-top: 20px;
+}
+
+.st-information-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 17px 0;
+    border-bottom: 1px solid var(--st-border);
+}
+
+.st-information-item span {
+    color: var(--st-secondary-text);
+}
+
+
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
+
+.st-settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.st-setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    padding: 20px 0;
+    border-bottom: 1px solid var(--st-border);
+}
+
+.st-setting-item h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+}
+
+.st-setting-item p {
+    margin: 0;
+    color: var(--st-secondary-text);
+    font-size: 14px;
+}
+
+.st-switch {
+    position: relative;
+
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.st-switch input {
+    display: none;
+}
+
+.st-slider {
+    position: absolute;
+    inset: 0;
+
+    background: #b7c3be;
+    border-radius: 30px;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.st-slider::before {
+    content: "";
+
+    position: absolute;
+    top: 3px;
+    left: 3px;
+
+    width: 22px;
+    height: 22px;
+
+    background: white;
+    border-radius: 50%;
+
+    transition: 0.3s;
+}
+
+.st-switch input:checked + .st-slider {
+    background: var(--st-primary);
+}
+
+.st-switch input:checked + .st-slider::before {
+    transform: translateX(24px);
+}
+
+
+/* =====================================================
+   MODO OSCURO
+===================================================== */
+
+body.st-dark-mode {
+    --st-background: #111916;
+    --st-card: #1b2521;
+    --st-text: #edf6f2;
+    --st-secondary-text: #9eafa8;
+    --st-border: #35453e;
+
+    background: var(--st-background);
+    color: var(--st-text);
+}
+
+body.st-dark-mode .st-user-avatar,
+body.st-dark-mode .st-large-avatar {
+    background: #28483b;
+}
+
+body.st-dark-mode .st-login-card {
+    background: #1b2521;
+}
+
+body.st-dark-mode .st-login-card h1,
+body.st-dark-mode .st-login-card label {
+    color: #edf6f2;
+}
+
+body.st-dark-mode .st-demo-account {
+    color: #d6ebe2;
+    background: #253d34;
+}
+
+body.st-dark-mode header {
+    background: #1b2521;
+}
+
+body.st-dark-mode .logo,
+body.st-dark-mode .nav-links a {
+    color: var(--st-text);
+}
+
+body.st-dark-mode #descripcion p,
+body.st-dark-mode .Descripcion,
+body.st-dark-mode .galeria-card p,
+body.st-dark-mode .sensor-descripcion {
+    color: var(--st-secondary-text);
+}
+
+body.st-dark-mode .propiedad-card,
+body.st-dark-mode .galeria-card,
+body.st-dark-mode .persona,
+body.st-dark-mode .sensor-card {
+    color: var(--st-text);
+    background: var(--st-card);
+    border-color: var(--st-border);
+}
+
+body.st-dark-mode #contacto {
+    background: var(--st-background);
+}
+
+body.st-dark-mode input,
+body.st-dark-mode textarea {
+    color: var(--st-text);
+    background: var(--st-card);
+    border: 1px solid var(--st-border);
+}
+
+body.st-dark-mode .contenedor-barra {
+    background: #35453e;
+}
+
+
+/* =====================================================
+   CELULARES
+===================================================== */
+
+@media screen and (max-width: 650px) {
+
+    .st-login-card {
+        padding: 28px 22px;
+    }
+
+    .st-user-button-information {
+        display: none;
+    }
+
+    .st-form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .st-information-item {
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .st-setting-item {
+        align-items: flex-start;
+    }
+
+}
+/* =========================================
+   MONITOR DEL CONTENEDOR
+========================================= */
+
+#sensor {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+#sensor h2 {
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.sensor-descripcion {
+    margin-bottom: 30px;
+    color: #68756f;
+    text-align: center;
+}
+
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.sensor-card {
+    padding: 25px;
+    background: white;
+    border: 1px solid #dce5e1;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(20, 50, 38, 0.08);
+}
+
+.sensor-card-principal {
+    grid-column: span 2;
+}
+
+.sensor-card h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.sensor-card p {
+    line-height: 1.5;
+}
+
+.sensor-porcentaje {
+    margin: 20px 0;
+    color: #18865d;
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+/* Barra de progreso */
+
+.contenedor-barra {
+    width: 100%;
+    height: 18px;
+    overflow: hidden;
+    margin: 20px 0;
+    background: #e1e8e5;
+    border-radius: 20px;
+}
+
+.barra-progreso {
+    width: 0%;
+    height: 100%;
+    background: #18865d;
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+
+/* Estados */
+
+.sensor-estado-texto {
+    margin-top: 16px;
+}
+
+.estado-sensor {
+    display: inline-block;
+    padding: 8px 13px;
+    color: #31574a;
+    background: #e4f4ed;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#estadoConexion {
+    color: #c23b3b;
+    font-weight: bold;
+}
+
+
+/* Diseño para celular */
+
+@media screen and (max-width: 700px) {
+
+    .sensor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sensor-card-principal {
+        grid-column: span 1;
+    }
+
 }
