@@ -836,3 +836,26 @@ body.st-dark-mode .contenedor-barra {
     }
 
 }
+
+/* Botón secundario para cambiar entre inicio de sesión y registro */
+.st-secondary-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px 18px;
+    color: var(--st-primary);
+    background: transparent;
+    border: 1px solid var(--st-primary);
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.st-secondary-button:hover {
+    color: white;
+    background: var(--st-primary);
+}
+
+#stRegisterForm h2 {
+    margin: 8px 0 22px;
+    text-align: center;
+}

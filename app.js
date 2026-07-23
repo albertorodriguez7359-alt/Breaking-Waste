@@ -1,840 +1,323 @@
 "use strict";
 
-/* =====================================================
-   DATOS PREDETERMINADOS
-===================================================== */
+const db = window.supabaseClient;
+let stCurrentUser = null;
+let stCurrentProfile = null;
 
-const ST_DEFAULT_USER = {
-    name: "Luis Alberto",
-    email: "usuario@correo.com",
-    password: "123456",
-    phone: "614 123 4567",
-    address: "Chihuahua, Chihuahua",
-    container: "Breaking Waste #001"
-};
+const $ = (id) => document.getElementById(id);
 
-const ST_DEFAULT_SETTINGS = {
-    darkMode: false,
-    notifications: true,
-    showPercentage: true,
-    sound: false
-};
+const stLoginScreen = $("stLoginScreen");
+const stApplication = $("stApplication");
+const stLoginForm = $("stLoginForm");
+const stRegisterForm = $("stRegisterForm");
+const stLoginMessage = $("stLoginMessage");
+const stRegisterMessage = $("stRegisterMessage");
+const stUserDropdown = $("stUserDropdown");
+const stPageSections = document.querySelectorAll(".st-page-section");
+const stNavigationButtons = document.querySelectorAll("[data-st-section]");
 
-
-/* =====================================================
-   INICIALIZAR DATOS
-===================================================== */
-
-function stInitializeData() {
-
-    if (!localStorage.getItem("stUser")) {
-        localStorage.setItem(
-            "stUser",
-            JSON.stringify(ST_DEFAULT_USER)
-        );
-    }
-
-    if (!localStorage.getItem("stSettings")) {
-        localStorage.setItem(
-            "stSettings",
-            JSON.stringify(ST_DEFAULT_SETTINGS)
-        );
-    }
-
+function stSetMessage(element, message, success = false) {
+    if (!element) return;
+    element.textContent = message;
+    element.classList.toggle("st-success-message", success);
+    element.classList.toggle("st-error-message", !success);
 }
 
-
-/* =====================================================
-   OBTENER ELEMENTOS DEL HTML
-===================================================== */
-
-const stLoginScreen =
-    document.getElementById("stLoginScreen");
-
-const stApplication =
-    document.getElementById("stApplication");
-
-const stLoginForm =
-    document.getElementById("stLoginForm");
-
-const stLoginEmail =
-    document.getElementById("stLoginEmail");
-
-const stLoginPassword =
-    document.getElementById("stLoginPassword");
-
-const stLoginMessage =
-    document.getElementById("stLoginMessage");
-
-const stUserMenuButton =
-    document.getElementById("stUserMenuButton");
-
-const stUserDropdown =
-    document.getElementById("stUserDropdown");
-
-const stLogoutButton =
-    document.getElementById("stLogoutButton");
-
-const stGoToEditButton =
-    document.getElementById("stGoToEditButton");
-
-const stEditProfileForm =
-    document.getElementById("stEditProfileForm");
-
-const stEditProfileMessage =
-    document.getElementById("stEditProfileMessage");
-
-const stSaveSettingsButton =
-    document.getElementById("stSaveSettingsButton");
-
-const stSettingsMessage =
-    document.getElementById("stSettingsMessage");
-
-const stNavigationButtons =
-    document.querySelectorAll("[data-st-section]");
-
-const stPageSections =
-    document.querySelectorAll(".st-page-section");
-
-
-/* =====================================================
-   USUARIO Y CONFIGURACIÓN
-===================================================== */
-
-function stGetUser() {
-
-    const savedUser =
-        localStorage.getItem("stUser");
-
-    if (!savedUser) {
-        return { ...ST_DEFAULT_USER };
-    }
-
-    try {
-        return JSON.parse(savedUser);
-    } catch (error) {
-        console.error(
-            "No se pudo leer el usuario guardado:",
-            error
-        );
-
-        return { ...ST_DEFAULT_USER };
-    }
-
+function stShowLoginForm() {
+    stLoginForm?.classList.remove("st-hidden");
+    stRegisterForm?.classList.add("st-hidden");
+    $("stShowRegisterButton")?.classList.remove("st-hidden");
+    stSetMessage(stLoginMessage, "");
+    stSetMessage(stRegisterMessage, "");
 }
 
-
-function stSaveUser(user) {
-
-    localStorage.setItem(
-        "stUser",
-        JSON.stringify(user)
-    );
-
+function stShowRegisterForm() {
+    stLoginForm?.classList.add("st-hidden");
+    stRegisterForm?.classList.remove("st-hidden");
+    $("stShowRegisterButton")?.classList.add("st-hidden");
+    stSetMessage(stLoginMessage, "");
+    stSetMessage(stRegisterMessage, "");
 }
 
-
-function stGetSettings() {
-
-    const savedSettings =
-        localStorage.getItem("stSettings");
-
-    if (!savedSettings) {
-        return { ...ST_DEFAULT_SETTINGS };
-    }
-
-    try {
-        return JSON.parse(savedSettings);
-    } catch (error) {
-        console.error(
-            "No se pudo leer la configuración:",
-            error
-        );
-
-        return { ...ST_DEFAULT_SETTINGS };
-    }
-
+function stShowLoginScreen() {
+    stApplication?.classList.add("st-hidden");
+    stLoginScreen?.classList.remove("st-hidden");
+    stShowLoginForm();
 }
 
-
-function stSaveSettings(settings) {
-
-    localStorage.setItem(
-        "stSettings",
-        JSON.stringify(settings)
-    );
-
-}
-
-
-/* =====================================================
-   MOSTRAR LOGIN O APLICACIÓN
-===================================================== */
-
-function stCheckSession() {
-
-    const activeSession =
-        localStorage.getItem("stActiveSession");
-
-    if (activeSession === "true") {
-        stShowApplication();
-    } else {
-        stShowLogin();
-    }
-
-}
-
-
-function stShowLogin() {
-
-    if (stApplication) {
-        stApplication.classList.add("st-hidden");
-    }
-
-    if (stLoginScreen) {
-        stLoginScreen.classList.remove("st-hidden");
-    }
-
-}
-
-
-function stShowApplication() {
-
-    if (stLoginScreen) {
-        stLoginScreen.classList.add("st-hidden");
-    }
-
-    if (stApplication) {
-        stApplication.classList.remove("st-hidden");
-    }
-
-    stUpdateUserInformation();
-    stLoadSettings();
+async function stShowApplication(user) {
+    stCurrentUser = user;
+    await stLoadProfile();
+    stLoginScreen?.classList.add("st-hidden");
+    stApplication?.classList.remove("st-hidden");
     stShowSection("stHomeSection");
-
 }
 
+async function stLoadProfile() {
+    if (!stCurrentUser) return;
 
-/* =====================================================
-   INICIAR SESIÓN
-===================================================== */
+    const { data, error } = await db
+        .from("profiles")
+        .select("id, full_name, email, phone, address, container_name, dark_mode, notifications, show_percentage, sound")
+        .eq("id", stCurrentUser.id)
+        .single();
 
-if (stLoginForm) {
-
-    stLoginForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-            const user = stGetUser();
-
-            const enteredEmail =
-                stLoginEmail.value.trim();
-
-            const enteredPassword =
-                stLoginPassword.value;
-
-            const correctEmail =
-                enteredEmail.toLowerCase() ===
-                user.email.toLowerCase();
-
-            const correctPassword =
-                enteredPassword === user.password;
-
-            if (correctEmail && correctPassword) {
-
-                localStorage.setItem(
-                    "stActiveSession",
-                    "true"
-                );
-
-                stLoginMessage.textContent = "";
-
-                stLoginForm.reset();
-
-                stShowApplication();
-
-            } else {
-
-                stLoginMessage.textContent =
-                    "El correo o la contraseña son incorrectos.";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   CERRAR SESIÓN
-===================================================== */
-
-if (stLogoutButton) {
-
-    stLogoutButton.addEventListener(
-        "click",
-        function () {
-
-            localStorage.removeItem(
-                "stActiveSession"
-            );
-
-            if (stUserDropdown) {
-                stUserDropdown.classList.add(
-                    "st-hidden"
-                );
-            }
-
-            stShowLogin();
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   ABRIR Y CERRAR MENÚ
-===================================================== */
-
-if (stUserMenuButton) {
-
-    stUserMenuButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.stopPropagation();
-
-            if (stUserDropdown) {
-                stUserDropdown.classList.toggle(
-                    "st-hidden"
-                );
-            }
-
-        }
-    );
-
-}
-
-
-document.addEventListener(
-    "click",
-    function (event) {
-
-        const clickedInsideMenu =
-            event.target.closest(
-                ".st-user-menu-container"
-            );
-
-        if (!clickedInsideMenu && stUserDropdown) {
-            stUserDropdown.classList.add(
-                "st-hidden"
-            );
-        }
-
-    }
-);
-
-
-/* =====================================================
-   CAMBIAR ENTRE SECCIONES
-===================================================== */
-
-stNavigationButtons.forEach(
-    function (button) {
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                const sectionId =
-                    button.dataset.stSection;
-
-                stShowSection(sectionId);
-
-                if (stUserDropdown) {
-                    stUserDropdown.classList.add(
-                        "st-hidden"
-                    );
-                }
-
-            }
-        );
-
-    }
-);
-
-
-function stShowSection(sectionId) {
-
-    stPageSections.forEach(
-        function (section) {
-
-            section.classList.remove(
-                "st-active-section"
-            );
-
-        }
-    );
-
-    const selectedSection =
-        document.getElementById(sectionId);
-
-    if (!selectedSection) {
-
-        console.error(
-            "No existe la sección:",
-            sectionId
-        );
-
+    if (error) {
+        console.error("No se pudo cargar el perfil:", error);
         return;
-
     }
 
-    selectedSection.classList.add(
-        "st-active-section"
-    );
-
-    if (sectionId === "stEditProfileSection") {
-        stFillEditForm();
-    }
-
+    stCurrentProfile = data;
+    stUpdateUserInformation();
+    stApplySettings(data);
 }
-
-
-if (stGoToEditButton) {
-
-    stGoToEditButton.addEventListener(
-        "click",
-        function () {
-
-            stShowSection(
-                "stEditProfileSection"
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   MOSTRAR INFORMACIÓN DEL USUARIO
-===================================================== */
 
 function stUpdateUserInformation() {
+    const profile = stCurrentProfile || {};
+    const name = profile.full_name || "Usuario";
+    const email = profile.email || stCurrentUser?.email || "";
 
-    const user = stGetUser();
-
-    stSetText("stHeaderName", user.name);
-    stSetText("stHeaderEmail", user.email);
-
-    stSetText("stProfileName", user.name);
-    stSetText("stProfileEmail", user.email);
-
-    stSetText(
-        "stInfoName",
-        user.name || "No registrado"
-    );
-
-    stSetText(
-        "stInfoEmail",
-        user.email || "No registrado"
-    );
-
-    stSetText(
-        "stInfoPhone",
-        user.phone || "No registrado"
-    );
-
-    stSetText(
-        "stInfoAddress",
-        user.address || "No registrada"
-    );
-
-    stSetText(
-        "stInfoContainer",
-        user.container || "Sin contenedor"
-    );
-
+    stSetText("stHeaderName", name);
+    stSetText("stHeaderEmail", email);
+    stSetText("stProfileName", name);
+    stSetText("stProfileEmail", email);
+    stSetText("stInfoName", profile.full_name || "No registrado");
+    stSetText("stInfoEmail", email || "No registrado");
+    stSetText("stInfoPhone", profile.phone || "No registrado");
+    stSetText("stInfoAddress", profile.address || "No registrada");
+    stSetText("stInfoContainer", profile.container_name || "Sin contenedor");
 }
 
-
-function stSetText(elementId, value) {
-
-    const element =
-        document.getElementById(elementId);
-
-    if (element) {
-        element.textContent = value;
-    }
-
+function stSetText(id, value) {
+    const element = $(id);
+    if (element) element.textContent = value;
 }
 
-
-/* =====================================================
-   LLENAR FORMULARIO DE EDICIÓN
-===================================================== */
+function stShowSection(sectionId) {
+    stPageSections.forEach((section) => section.classList.remove("st-active-section"));
+    const section = $(sectionId);
+    if (!section) return;
+    section.classList.add("st-active-section");
+    if (sectionId === "stEditProfileSection") stFillEditForm();
+}
 
 function stFillEditForm() {
-
-    const user = stGetUser();
-
-    const editName =
-        document.getElementById("stEditName");
-
-    const editEmail =
-        document.getElementById("stEditEmail");
-
-    const editPhone =
-        document.getElementById("stEditPhone");
-
-    const editAddress =
-        document.getElementById("stEditAddress");
-
-    const editContainer =
-        document.getElementById("stEditContainer");
-
-    const editPassword =
-        document.getElementById("stEditPassword");
-
-    const confirmPassword =
-        document.getElementById("stConfirmPassword");
-
-    if (editName) {
-        editName.value = user.name || "";
-    }
-
-    if (editEmail) {
-        editEmail.value = user.email || "";
-    }
-
-    if (editPhone) {
-        editPhone.value = user.phone || "";
-    }
-
-    if (editAddress) {
-        editAddress.value = user.address || "";
-    }
-
-    if (editContainer) {
-        editContainer.value = user.container || "";
-    }
-
-    if (editPassword) {
-        editPassword.value = "";
-    }
-
-    if (confirmPassword) {
-        confirmPassword.value = "";
-    }
-
-    if (stEditProfileMessage) {
-        stEditProfileMessage.textContent = "";
-    }
-
+    const profile = stCurrentProfile || {};
+    if ($("stEditName")) $("stEditName").value = profile.full_name || "";
+    if ($("stEditEmail")) $("stEditEmail").value = profile.email || stCurrentUser?.email || "";
+    if ($("stEditPhone")) $("stEditPhone").value = profile.phone || "";
+    if ($("stEditAddress")) $("stEditAddress").value = profile.address || "";
+    if ($("stEditContainer")) $("stEditContainer").value = profile.container_name || "";
+    if ($("stEditPassword")) $("stEditPassword").value = "";
+    if ($("stConfirmPassword")) $("stConfirmPassword").value = "";
+    stSetMessage($("stEditProfileMessage"), "", true);
 }
 
+function stApplySettings(profile) {
+    const darkMode = Boolean(profile?.dark_mode);
+    document.body.classList.toggle("st-dark-mode", darkMode);
 
-/* =====================================================
-   GUARDAR PERFIL
-===================================================== */
+    if ($("stDarkModeSetting")) $("stDarkModeSetting").checked = darkMode;
+    if ($("stNotificationsSetting")) $("stNotificationsSetting").checked = profile?.notifications !== false;
+    if ($("stPercentageSetting")) $("stPercentageSetting").checked = profile?.show_percentage !== false;
+    if ($("stSoundSetting")) $("stSoundSetting").checked = Boolean(profile?.sound);
 
-if (stEditProfileForm) {
-
-    stEditProfileForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-            const user = stGetUser();
-
-            const newName =
-                document
-                    .getElementById("stEditName")
-                    .value
-                    .trim();
-
-            const newEmail =
-                document
-                    .getElementById("stEditEmail")
-                    .value
-                    .trim();
-
-            const newPhone =
-                document
-                    .getElementById("stEditPhone")
-                    .value
-                    .trim();
-
-            const newAddress =
-                document
-                    .getElementById("stEditAddress")
-                    .value
-                    .trim();
-
-            const newContainer =
-                document
-                    .getElementById("stEditContainer")
-                    .value
-                    .trim();
-
-            const newPassword =
-                document
-                    .getElementById("stEditPassword")
-                    .value;
-
-            const confirmedPassword =
-                document
-                    .getElementById("stConfirmPassword")
-                    .value;
-
-
-            if (newName === "" || newEmail === "") {
-
-                stShowProfileMessage(
-                    "El nombre y el correo son obligatorios.",
-                    false
-                );
-
-                return;
-
-            }
-
-
-            if (newPassword !== confirmedPassword) {
-
-                stShowProfileMessage(
-                    "Las contraseñas no coinciden.",
-                    false
-                );
-
-                return;
-
-            }
-
-
-            if (
-                newPassword !== "" &&
-                newPassword.length < 6
-            ) {
-
-                stShowProfileMessage(
-                    "La contraseña debe tener al menos 6 caracteres.",
-                    false
-                );
-
-                return;
-
-            }
-
-
-            user.name = newName;
-            user.email = newEmail;
-            user.phone = newPhone;
-            user.address = newAddress;
-            user.container = newContainer;
-
-
-            if (newPassword !== "") {
-                user.password = newPassword;
-            }
-
-
-            stSaveUser(user);
-            stUpdateUserInformation();
-
-            stShowProfileMessage(
-                "Los cambios se guardaron correctamente.",
-                true
-            );
-
-
-            document.getElementById(
-                "stEditPassword"
-            ).value = "";
-
-            document.getElementById(
-                "stConfirmPassword"
-            ).value = "";
-
-        }
-    );
-
+    localStorage.setItem("stShowPercentage", String(profile?.show_percentage !== false));
+    localStorage.setItem("stNotificationsEnabled", String(profile?.notifications !== false));
+    localStorage.setItem("stSoundEnabled", String(Boolean(profile?.sound)));
 }
 
+$("stShowRegisterButton")?.addEventListener("click", stShowRegisterForm);
+$("stShowLoginButton")?.addEventListener("click", stShowLoginForm);
 
-function stShowProfileMessage(message, success) {
+stLoginForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    stSetMessage(stLoginMessage, "Iniciando sesión...", true);
 
-    if (!stEditProfileMessage) {
+    const email = $("stLoginEmail").value.trim();
+    const password = $("stLoginPassword").value;
+
+    const { data, error } = await db.auth.signInWithPassword({ email, password });
+
+    if (error) {
+        stSetMessage(stLoginMessage, "Correo o contraseña incorrectos.");
         return;
     }
 
-    stEditProfileMessage.textContent = message;
+    stLoginForm.reset();
+    await stShowApplication(data.user);
+});
 
-    stEditProfileMessage.style.color =
-        success
-            ? "#18865d"
-            : "#d94d4d";
+stRegisterForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-}
+    const fullName = $("stRegisterName").value.trim();
+    const email = $("stRegisterEmail").value.trim();
+    const phone = $("stRegisterPhone").value.trim();
+    const address = $("stRegisterAddress").value.trim();
+    const containerName = $("stRegisterContainer").value.trim();
+    const password = $("stRegisterPassword").value;
+    const confirmPassword = $("stRegisterConfirmPassword").value;
 
-
-/* =====================================================
-   CONFIGURACIÓN
-===================================================== */
-
-function stLoadSettings() {
-
-    const settings = stGetSettings();
-
-    const darkModeSetting =
-        document.getElementById(
-            "stDarkModeSetting"
-        );
-
-    const notificationsSetting =
-        document.getElementById(
-            "stNotificationsSetting"
-        );
-
-    const percentageSetting =
-        document.getElementById(
-            "stPercentageSetting"
-        );
-
-    const soundSetting =
-        document.getElementById(
-            "stSoundSetting"
-        );
-
-
-    if (darkModeSetting) {
-        darkModeSetting.checked =
-            settings.darkMode;
+    if (password !== confirmPassword) {
+        stSetMessage(stRegisterMessage, "Las contraseñas no coinciden.");
+        return;
     }
 
-    if (notificationsSetting) {
-        notificationsSetting.checked =
-            settings.notifications;
-    }
+    stSetMessage(stRegisterMessage, "Creando cuenta...", true);
 
-    if (percentageSetting) {
-        percentageSetting.checked =
-            settings.showPercentage;
-    }
-
-    if (soundSetting) {
-        soundSetting.checked =
-            settings.sound;
-    }
-
-    stApplySettings(settings);
-
-}
-
-
-if (stSaveSettingsButton) {
-
-    stSaveSettingsButton.addEventListener(
-        "click",
-        function () {
-
-            const settings = {
-
-                darkMode:
-                    document.getElementById(
-                        "stDarkModeSetting"
-                    ).checked,
-
-                notifications:
-                    document.getElementById(
-                        "stNotificationsSetting"
-                    ).checked,
-
-                showPercentage:
-                    document.getElementById(
-                        "stPercentageSetting"
-                    ).checked,
-
-                sound:
-                    document.getElementById(
-                        "stSoundSetting"
-                    ).checked
-
-            };
-
-            stSaveSettings(settings);
-            stApplySettings(settings);
-
-            if (stSettingsMessage) {
-
-                stSettingsMessage.textContent =
-                    "Configuración guardada correctamente.";
-
-                setTimeout(
-                    function () {
-                        stSettingsMessage.textContent = "";
-                    },
-                    2500
-                );
-
+    const { data, error } = await db.auth.signUp({
+        email,
+        password,
+        options: {
+            data: {
+                full_name: fullName,
+                phone,
+                address,
+                container_name: containerName
             }
-
         }
-    );
+    });
 
-}
-
-
-/* =====================================================
-   APLICAR CONFIGURACIÓN
-===================================================== */
-
-function stApplySettings(settings) {
-
-    document.body.classList.toggle(
-        "st-dark-mode",
-        settings.darkMode
-    );
-
-    /*
-        Guardamos esta configuración para que
-        sensor.html también pueda utilizarla.
-    */
-
-    localStorage.setItem(
-        "stShowPercentage",
-        String(settings.showPercentage)
-    );
-
-    localStorage.setItem(
-        "stNotificationsEnabled",
-        String(settings.notifications)
-    );
-
-    localStorage.setItem(
-        "stSoundEnabled",
-        String(settings.sound)
-    );
-
-}
-
-
-/* =====================================================
-   INICIAR APLICACIÓN
-===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        stInitializeData();
-        stCheckSession();
-
+    if (error) {
+        stSetMessage(stRegisterMessage, error.message);
+        return;
     }
-);
+
+    stRegisterForm.reset();
+
+    if (data.session && data.user) {
+        await stShowApplication(data.user);
+    } else {
+        stSetMessage(
+            stRegisterMessage,
+            "Cuenta creada. Revisa tu correo para confirmar la cuenta y después inicia sesión.",
+            true
+        );
+    }
+});
+
+$("stLogoutButton")?.addEventListener("click", async () => {
+    await db.auth.signOut();
+    stCurrentUser = null;
+    stCurrentProfile = null;
+    stShowLoginScreen();
+});
+
+$("stUserMenuButton")?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    stUserDropdown?.classList.toggle("st-hidden");
+});
+
+document.addEventListener("click", (event) => {
+    if (!event.target.closest(".st-user-menu-container")) {
+        stUserDropdown?.classList.add("st-hidden");
+    }
+});
+
+stNavigationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        stShowSection(button.dataset.stSection);
+        stUserDropdown?.classList.add("st-hidden");
+    });
+});
+
+$("stGoToEditButton")?.addEventListener("click", () => stShowSection("stEditProfileSection"));
+
+$("stEditProfileForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = $("stEditProfileMessage");
+
+    const fullName = $("stEditName").value.trim();
+    const email = $("stEditEmail").value.trim();
+    const phone = $("stEditPhone").value.trim();
+    const address = $("stEditAddress").value.trim();
+    const containerName = $("stEditContainer").value.trim();
+    const password = $("stEditPassword").value;
+    const confirmPassword = $("stConfirmPassword").value;
+
+    if (password && password !== confirmPassword) {
+        stSetMessage(message, "Las contraseñas no coinciden.");
+        return;
+    }
+
+    stSetMessage(message, "Guardando cambios...", true);
+
+    const authChanges = {};
+    if (email !== stCurrentUser.email) authChanges.email = email;
+    if (password) authChanges.password = password;
+
+    if (Object.keys(authChanges).length > 0) {
+        const { error: authError } = await db.auth.updateUser(authChanges);
+        if (authError) {
+            stSetMessage(message, authError.message);
+            return;
+        }
+    }
+
+    const { error } = await db
+        .from("profiles")
+        .update({
+            full_name: fullName,
+            email,
+            phone,
+            address,
+            container_name: containerName,
+            updated_at: new Date().toISOString()
+        })
+        .eq("id", stCurrentUser.id);
+
+    if (error) {
+        stSetMessage(message, error.message);
+        return;
+    }
+
+    const { data: userData } = await db.auth.getUser();
+    stCurrentUser = userData.user;
+    await stLoadProfile();
+    stSetMessage(message, "Perfil actualizado correctamente.", true);
+});
+
+$("stSaveSettingsButton")?.addEventListener("click", async () => {
+    const message = $("stSettingsMessage");
+    const settings = {
+        dark_mode: $("stDarkModeSetting")?.checked || false,
+        notifications: $("stNotificationsSetting")?.checked ?? true,
+        show_percentage: $("stPercentageSetting")?.checked ?? true,
+        sound: $("stSoundSetting")?.checked || false,
+        updated_at: new Date().toISOString()
+    };
+
+    const { error } = await db
+        .from("profiles")
+        .update(settings)
+        .eq("id", stCurrentUser.id);
+
+    if (error) {
+        stSetMessage(message, error.message);
+        return;
+    }
+
+    stCurrentProfile = { ...stCurrentProfile, ...settings };
+    stApplySettings(stCurrentProfile);
+    stSetMessage(message, "Configuración guardada.", true);
+});
+
+async function stInitializeApplication() {
+    const { data, error } = await db.auth.getSession();
+    if (error) console.error(error);
+
+    if (data.session?.user) {
+        await stShowApplication(data.session.user);
+    } else {
+        stShowLoginScreen();
+    }
+
+    db.auth.onAuthStateChange(async (event, session) => {
+        if (event === "SIGNED_OUT" || !session) {
+            stShowLoginScreen();
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", stInitializeApplication);

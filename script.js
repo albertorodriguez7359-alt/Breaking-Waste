@@ -41,6 +41,9 @@ let consultaEnProceso = false;
 
 let alertaMostrada = false;
 
+let ultimaLecturaGuardada = null;
+let ultimoGuardadoSensor = 0;
+const INTERVALO_GUARDADO_SENSOR = 30000;
 
 /* =====================================================
    OBTENER INFORMACIÓN DEL ESP32
@@ -163,6 +166,9 @@ async function actualizarSensor() {
 
         );
 
+        /* Guardar la lectura en Supabase cuando cambia o cada 30 segundos. */
+        await guardarLecturaEnSupabase(datosProcesados, true);
+
 
         /*
             Aplicar la configuración guardada.
@@ -236,6 +242,53 @@ async function actualizarSensor() {
     }
 
 }
+
+
+/* =====================================================
+   GUARDAR LECTURAS EN SUPABASE
+===================================================== */
+
+async function guardarLecturaEnSupabase(datos, conectado) {
+
+    if (!window.supabaseClient) return;
+
+    const ahora = Date.now();
+    const firma = `${datos.porcentaje}-${datos.sensor50}-${datos.sensor90}-${conectado}`;
+    const cambio = firma !== ultimaLecturaGuardada;
+    const vencioIntervalo = ahora - ultimoGuardadoSensor >= INTERVALO_GUARDADO_SENSOR;
+
+    if (!cambio && !vencioIntervalo) return;
+
+    const { data: sessionData } = await window.supabaseClient.auth.getSession();
+    const user = sessionData.session?.user;
+    if (!user) return;
+
+    const { data: profile } = await window.supabaseClient
+        .from("profiles")
+        .select("container_name")
+        .eq("id", user.id)
+        .single();
+
+    const { error } = await window.supabaseClient
+        .from("sensor_readings")
+        .insert({
+            user_id: user.id,
+            container_name: profile?.container_name || "",
+            percentage: convertirPorcentaje(datos.porcentaje),
+            sensor_50: Boolean(datos.sensor50),
+            sensor_90: Boolean(datos.sensor90),
+            connected: Boolean(conectado)
+        });
+
+    if (error) {
+        console.error("No se pudo guardar la lectura en Supabase:", error);
+        return;
+    }
+
+    ultimaLecturaGuardada = firma;
+    ultimoGuardadoSensor = ahora;
+}
+
 /* =====================================================
    PROCESAR LOS DATOS RECIBIDOS
 ===================================================== */

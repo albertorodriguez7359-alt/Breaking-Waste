@@ -93,19 +93,52 @@
             ></p>
 
 
-            <div class="st-demo-account">
+            <button type="button" id="stShowRegisterButton" class="st-secondary-button">
+                Crear una cuenta
+            </button>
 
-                <strong>Cuenta de prueba</strong>
+            <form id="stRegisterForm" class="st-hidden">
+                <h2>Crear cuenta</h2>
 
-                <p>
-                    Correo: usuario@correo.com
-                </p>
+                <div class="st-form-group">
+                    <label for="stRegisterName">Nombre completo</label>
+                    <input type="text" id="stRegisterName" autocomplete="name" required>
+                </div>
 
-                <p>
-                    Contraseña: 123456
-                </p>
+                <div class="st-form-group">
+                    <label for="stRegisterEmail">Correo electrónico</label>
+                    <input type="email" id="stRegisterEmail" autocomplete="email" required>
+                </div>
 
-            </div>
+                <div class="st-form-group">
+                    <label for="stRegisterPhone">Teléfono</label>
+                    <input type="tel" id="stRegisterPhone" autocomplete="tel">
+                </div>
+
+                <div class="st-form-group">
+                    <label for="stRegisterAddress">Dirección</label>
+                    <input type="text" id="stRegisterAddress" autocomplete="street-address">
+                </div>
+
+                <div class="st-form-group">
+                    <label for="stRegisterContainer">Contenedor asignado</label>
+                    <input type="text" id="stRegisterContainer" placeholder="Breaking Waste #001">
+                </div>
+
+                <div class="st-form-group">
+                    <label for="stRegisterPassword">Contraseña</label>
+                    <input type="password" id="stRegisterPassword" minlength="6" autocomplete="new-password" required>
+                </div>
+
+                <div class="st-form-group">
+                    <label for="stRegisterConfirmPassword">Confirmar contraseña</label>
+                    <input type="password" id="stRegisterConfirmPassword" minlength="6" autocomplete="new-password" required>
+                </div>
+
+                <button type="submit" class="st-primary-button">Crear cuenta</button>
+                <button type="button" id="stShowLoginButton" class="st-secondary-button">Ya tengo una cuenta</button>
+                <p id="stRegisterMessage" class="st-error-message"></p>
+            </form>
 
         </div>
 
@@ -911,7 +944,19 @@
          JAVASCRIPT DEL PERFIL Y SESIÓN
     =========================================== -->
 
-    <script src="app.js"></script>
+    <!-- Biblioteca oficial de Supabase -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+<!-- Configuración del proyecto -->
+
+<script src="supabase-config.js"></script>
+
+<!-- Lógica de autenticación -->
+
+<script src="app.js"></script>
 
 </body>
 
