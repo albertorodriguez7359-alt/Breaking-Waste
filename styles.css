@@ -988,3 +988,127 @@ body.st-dark-mode .contenedor-barra {
         margin-top: 8px;
     }
 }
+/* =====================================================
+   CORRECCIÓN DE SCROLL PARA LOGIN Y REGISTRO EN CELULAR
+===================================================== */
+
+.st-login-screen {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    align-items: flex-start;
+    justify-content: center;
+
+    padding: 20px 16px;
+
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+}
+
+.st-login-card {
+    width: 100%;
+    max-width: 430px;
+
+    margin: auto 0;
+    flex-shrink: 0;
+}
+
+/* Celulares */
+@media screen and (max-width: 650px) {
+
+    .st-login-screen {
+        position: fixed;
+        inset: 0;
+
+        display: block;
+
+        height: 100vh;
+        height: 100dvh;
+
+        padding: 14px 12px 40px;
+
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .st-login-card {
+        width: 100%;
+        max-width: none;
+
+        margin: 0 auto;
+        padding: 22px 18px;
+
+        border-radius: 15px;
+    }
+
+    .st-login-logo {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 10px;
+        font-size: 29px;
+    }
+
+    .st-login-card h1 {
+        font-size: 25px;
+    }
+
+    .st-login-description {
+        margin-bottom: 18px;
+        font-size: 14px;
+    }
+
+    .st-form-group {
+        gap: 5px;
+        margin-bottom: 13px;
+    }
+
+    .st-form-group input {
+        min-height: 44px;
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+
+    .st-primary-button,
+    .st-secondary-button {
+        min-height: 44px;
+        padding: 10px 14px;
+    }
+
+    #stRegisterForm h2 {
+        margin: 14px 0 16px;
+        font-size: 22px;
+    }
+}
+
+/* Celulares con poca altura */
+@media screen and (max-height: 700px) {
+
+    .st-login-screen {
+        align-items: flex-start;
+        padding-top: 10px;
+        padding-bottom: 35px;
+    }
+
+    .st-login-card {
+        margin: 0 auto;
+        padding-top: 18px;
+        padding-bottom: 20px;
+    }
+
+    .st-login-logo {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 8px;
+        font-size: 26px;
+    }
+
+    .st-login-description {
+        margin-bottom: 14px;
+    }
+}
