@@ -859,3 +859,132 @@ body.st-dark-mode .contenedor-barra {
     margin: 8px 0 22px;
     text-align: center;
 }
+
+/* =====================================================
+   AJUSTE RESPONSIVE PARA INICIO DE SESIÓN Y REGISTRO
+   ===================================================== */
+
+/* Permite desplazar toda la pantalla cuando el formulario es más alto */
+.st-login-screen {
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: flex-start;
+    padding: 24px 16px;
+}
+
+/* La tarjeta nunca será más alta que la pantalla sin permitir scroll */
+.st-login-card {
+    max-width: 430px;
+    margin: auto;
+    padding: 28px;
+}
+
+/* Reduce espacios dentro de los formularios de sesión y registro */
+#stLoginForm,
+#stRegisterForm {
+    gap: 0;
+}
+
+.st-login-card .st-form-group {
+    margin-bottom: 14px;
+}
+
+.st-login-card .st-form-group input {
+    padding: 11px 12px;
+}
+
+/* Laptop con pantalla de poca altura */
+@media screen and (max-height: 760px) {
+    .st-login-screen {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .st-login-card {
+        padding: 22px 26px;
+    }
+
+    .st-login-logo {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 10px;
+        font-size: 28px;
+    }
+
+    .st-login-card h1 {
+        font-size: 25px;
+        margin-bottom: 3px;
+    }
+
+    .st-login-description {
+        margin-bottom: 16px;
+        font-size: 14px;
+    }
+
+    .st-login-card .st-form-group {
+        margin-bottom: 11px;
+        gap: 5px;
+    }
+
+    #stRegisterForm h2 {
+        margin: 4px 0 14px;
+        font-size: 21px;
+    }
+}
+
+/* Celulares */
+@media screen and (max-width: 650px) {
+    .st-login-screen {
+        display: block;
+        padding: 12px;
+    }
+
+    .st-login-card {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 22px 18px;
+        border-radius: 15px;
+    }
+
+    .st-login-logo {
+        width: 54px;
+        height: 54px;
+        margin-bottom: 10px;
+        font-size: 27px;
+        border-radius: 14px;
+    }
+
+    .st-login-card h1 {
+        font-size: 23px;
+    }
+
+    .st-login-description {
+        margin-bottom: 16px;
+        font-size: 13px;
+    }
+
+    .st-login-card .st-form-group {
+        margin-bottom: 12px;
+        gap: 5px;
+    }
+
+    .st-login-card .st-form-group label {
+        font-size: 13px;
+    }
+
+    .st-login-card .st-form-group input,
+    .st-login-card .st-primary-button,
+    .st-login-card .st-secondary-button {
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    #stRegisterForm h2 {
+        margin: 5px 0 15px;
+        font-size: 20px;
+    }
+
+    .st-error-message {
+        margin-top: 8px;
+    }
+}
