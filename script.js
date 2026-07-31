@@ -11,7 +11,7 @@
     monitor serial muestre una IP diferente.
 */
 
-const ESP32 = "http://192.168.0.20";
+const ESP32 = "http://192.168.0.206";
 
 /*
     Ruta que utiliza el servidor web del ESP32.
